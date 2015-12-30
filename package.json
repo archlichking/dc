@@ -2,7 +2,7 @@
   "name": "dpro",
   "version": "0.0.1",
   "description": "data provider for testarmada test",
-  "main": "dc.js",
+  "main": "dpro.js",
   "contributors": [{
     "name": "Lei Zhu",
     "url": "https://github.com/archlichking"

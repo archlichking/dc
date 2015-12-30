@@ -12,7 +12,7 @@ var DPRO_LOCATION = process.env.DPRO_LOCATION || "./conf/data/";
  * use the one in ${DPRO_LOCATION}/${DPRO_ENV_DPRO_INST}.js
  */
 
-module.exports = function dpro() {
+var DPro = function DPro() {
   if (!DPRO_ENV) {
     // data will be provided in test
     console.warn(clc.yellowBright("[WARN]: No data file loaded by data provider"));
@@ -57,3 +57,5 @@ module.exports = function dpro() {
   console.log(clc.blueBright("[INFO]: loaded data file " + filename + ".js"));
   return data
 };
+
+module.exports = new DPro();

@@ -12,68 +12,48 @@ var DPRO_LOCATION = process.env.DPRO_LOCATION || "./conf/data/";
  * use the one in ${DPRO_LOCATION}/${DPRO_ENV_DPRO_INST}.js
  */
 
-var DC = function DC() {
-
-};
-
-DC.prototype = {
-  load: function load(data) {
-    // allow usage of `require("dpro").load(data)`;
-    if (!data) {
-      // load from files given by process.env
-      return this.loadFromEnv();
-    }
-
-    console.log(clc.blueBright("[INFO]: use data given from .load(data)"));
-    return data;
-  },
-
-  loadFromEnv: function loadFromEnv() {
-    if (!DPRO_ENV) {
-      // data will be provided in test
-      console.warn(clc.yellowBright("[WARN]: No data file loaded by data provider"));
-      return {};
-    }
-
-    // init
-    var envData = {};
-    var instanceData = {};
-
-    try {
-      // load envData
-      var penv = path.join(process.cwd(), DPRO_LOCATION, DPRO_ENV);
-      envData = require(penv);
-      filename = penv;
-    } catch (e) {
-      // if error happens, return instead of throwing an error out
-      console.error(clc.redBright("[ERR]: data file load failed " + e));
-      console.error(clc.redBright("[ERR]: no data will be loaded"));
-      return {};
-    }
-
-    // only load instanceData on cue
-    if (DPRO_INST) {
-      try {
-        // load instanceData
-        var pinstance = path.join(process.cwd(), DPRO_LOCATION, DPRO_ENV + "-" + DPRO_INST);
-        instanceData = require(pinstance);
-        filename = pinstance;
-      } catch (e) {
-        // if error happens, log it out only
-        console.warn(clc.yellowBright("[WARN]: data file (" + DPRO_ENV + "-" + DPRO_INST + ".js) failed in loading " + e));
-        console.log(clc.blueBright("[INFO]: use data file " + filename + ".js only"));
-      }
-    }
-
-    var data = _.assign(envData, instanceData, function (env, inst) {
-      // only support first level data merge 
-      return _.isUndefined(env) ? inst : env;
-    });
-
-    console.log(clc.blueBright("[INFO]: loaded data file " + filename + ".js"));
-    return data
-
+module.exports = function dpro() {
+  if (!DPRO_ENV) {
+    // data will be provided in test
+    console.warn(clc.yellowBright("[WARN]: No data file loaded by data provider"));
+    return {};
   }
-}
 
-module.exports = new DC().load();
+  // init
+  var envData = {};
+  var instanceData = {};
+
+  try {
+    // load envData
+    var penv = path.join(process.cwd(), DPRO_LOCATION, DPRO_ENV);
+    envData = require(penv);
+    filename = penv;
+  } catch (e) {
+    // if error happens, return instead of throwing an error out
+    console.error(clc.redBright("[ERR]: data file load failed " + e));
+    console.error(clc.redBright("[ERR]: no data will be loaded"));
+    return {};
+  }
+
+  // only load instanceData on cue
+  if (DPRO_INST) {
+    try {
+      // load instanceData
+      var pinstance = path.join(process.cwd(), DPRO_LOCATION, DPRO_ENV + "-" + DPRO_INST);
+      instanceData = require(pinstance);
+      filename = pinstance;
+    } catch (e) {
+      // if error happens, log it out only
+      console.warn(clc.yellowBright("[WARN]: data file (" + DPRO_ENV + "-" + DPRO_INST + ".js) failed in loading " + e));
+      console.log(clc.blueBright("[INFO]: use data file " + filename + ".js only"));
+    }
+  }
+
+  var data = _.assign(envData, instanceData, function (env, inst) {
+    // only support first level data merge 
+    return _.isUndefined(env) ? inst : env;
+  });
+
+  console.log(clc.blueBright("[INFO]: loaded data file " + filename + ".js"));
+  return data
+};

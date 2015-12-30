@@ -15,7 +15,7 @@ var DPRO_LOCATION = process.env.DPRO_LOCATION || "./conf/data/";
 var DC = function load() {
   if (!DPRO_ENV) {
     // data will be provided in test
-    console.log(clc.blueBright("[INFO]: No data file loaded by data provider"));
+    console.warn(clc.yellowBright("[WARN]: No data file loaded by data provider"));
     return {};
   }
 

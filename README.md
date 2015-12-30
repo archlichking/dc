@@ -48,7 +48,7 @@ Each `.js` data file should return a json object.
  *  }
  *}
  */
- var td = require("testarmada-dpro");
+ var td = require("dpro");
 
  console.log(td.beijing, td.beijing.description);
  console.log(td.timestamp());

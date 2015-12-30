@@ -5,27 +5,33 @@ Provider should only support `.js`. `.js` support is to allow user generate some
 Each `.js` data file should return a json object.
 ##### supported files
 ```
-   ${ENV}.js          : to define main test data
-   ${ENV_INSTANCE}.js : (optional) to define extra data that only applies to certain instance
+   ${DPRO}.js          : main test data
+   ${DPRO_INST}.js : (optional) extra data that only applies to certain instance
 ```
 ##### default file location
 ```bash
   ${REPO_ROOT}/config/data
+
+  # file location can be changed by using
+  ${DPRO_LOCATION}
 ```
 ##### file loading rules
 ###### basic
 ```bash
  # to only load from ${REPO_ROOT}/config/data/local.js
- DC=local ./node_modules/.bin/magellan --test xxxxx ......
+ DPRO=local ./node_modules/.bin/magellan --test xxxxx ......
 
  # to only load from ${REPO_ROOT}/config/data/prod-a.js
- DC=prod-a ./node_modules/.bin/magellan --test xxxxx ......
+ DPRO=prod-a ./node_modules/.bin/magellan --test xxxxx ......
 ``` 
 ###### advantage
 ```bash
+ # change file location to ${REPO_ROOT}/config/staging.js
+ DPRO_LOCATION="./config/" DPRO=staging ./node_modules/.bin/magellan --test xxxxx ......
+
  # load both ${REPO_ROOT}/config/data/staging.js and ${REPO_ROOT}/config/data/staging-2.js
  # config in staging-2.js will be used if common config exists.
- DC=staging DC_INS=2 ./node_modules/.bin/magellan --test xxxxx ......
+ DPRO=staging DPRO_INST=2 ./node_modules/.bin/magellan --test xxxxx ......
 ```
 
 ##### usage
@@ -42,7 +48,7 @@ Each `.js` data file should return a json object.
  *  }
  *}
  */
- var td = require("dp");
+ var td = require("testarmada-dpro");
 
  console.log(td.beijing, td.beijing.description);
  console.log(td.timestamp());

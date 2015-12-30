@@ -25,7 +25,7 @@ var DC = function load() {
 
   try {
     // load envData
-    var penv = path.join(__dirname, DPRO_LOCATION, DPRO_ENV);
+    var penv = path.join(process.cwd(), DPRO_LOCATION, DPRO_ENV);
     envData = require(penv);
     filename = penv;
   } catch (e) {
@@ -39,7 +39,7 @@ var DC = function load() {
   if (DPRO_INST) {
     try {
       // load instanceData
-      var pinstance = path.join(__dirname, DPRO_LOCATION, DPRO_ENV + "-" + DPRO_INST);
+      var pinstance = path.join(process.cwd(), DPRO_LOCATION, DPRO_ENV + "-" + DPRO_INST);
       instanceData = require(pinstance);
       filename = pinstance;
     } catch (e) {
